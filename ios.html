@@ -6,58 +6,66 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>iOS viewport probe</title>
 <style>
-  :root{--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#0b1117;color:#e7edf3;
-    font:600 15px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}
-  #pad{padding:calc(12px + var(--sat)) 14px calc(12px + var(--sab))}
-  h1{font-size:15px;margin:0 0 10px;color:#4ade80;letter-spacing:.02em}
+  html,body{margin:0;background:#0b1117;color:#e7edf3;
+    font:600 14px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+  html{height:100%}body{height:100%}
+  #panel{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:5;
+    background:rgba(11,17,23,.96);padding:10px 12px;border-bottom:1px solid #1e2a36}
+  h1{font-size:13px;margin:0 0 8px;color:#4ade80}
   table{border-collapse:collapse;width:100%}
-  td{padding:3px 0;vertical-align:top}
-  td:first-child{color:#8fa3b5;padding-right:10px;white-space:nowrap}
+  td{padding:2px 0}
+  td:first-child{color:#8fa3b5}
   td:last-child{text-align:right;color:#fff;font-variant-numeric:tabular-nums}
-  .big{color:#fbbf24}
-  /* a probe shaped EXACTLY like Clio's dock */
-  #dock{position:fixed;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));
-    height:64px;border-radius:999px;background:#14532d;border:2px solid #4ade80;
-    display:flex;align-items:center;justify-content:center;color:#d1fae5;font-size:12px}
+  .big{color:#fbbf24}.bad{color:#f87171}.good{color:#4ade80}
+  #spacer{height:260vh;padding:230px 12px 0;color:#64748b}
+  /* A: fixed like Clio's dock (layout viewport) */
+  #dockA{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));
+    height:56px;border-radius:999px;background:#14532d;border:2px solid #4ade80;
+    display:flex;align-items:center;justify-content:center;color:#d1fae5;font-size:11px;z-index:6}
+  /* B: a 100dvh-tall box — its bottom edge tracks the DYNAMIC viewport */
+  #boxB{position:absolute;top:0;left:0;right:0;height:100dvh;
+    border-bottom:3px dashed #f87171;pointer-events:none}
+  #boxB span{position:absolute;bottom:4px;right:8px;color:#f87171;font-size:11px}
 </style></head>
 <body>
-<div id="pad">
-  <h1>iOS viewport probe</h1>
-  <table id="t"></table>
-</div>
-<div id="dock">dock probe — same CSS as Clio</div>
+<div id="boxB"><span>&#9660; bottom of 100dvh</span></div>
+<div id="panel"><h1>iOS viewport probe &mdash; SCROLL DOWN, then screenshot</h1><table id="t"></table></div>
+<div id="spacer">scroll down &mdash; the numbers above update live.<br>Watch <b>innerHeight</b> and <b>GAP under dock</b>.</div>
+<div id="dockA">dock probe &mdash; same CSS as Clio</div>
 <script>
-  var px = function (v) { return Math.round(v) + 'px'; };
-  function read(name){
-    var d=document.createElement('div');
-    d.style.cssText='position:fixed;left:-9999px;height:env('+name+',0px)';
-    document.body.appendChild(d);
-    var h=d.getBoundingClientRect().height; d.remove(); return h;
+  var px=function(v){return Math.round(v)+'px'};
+  function envv(n){var d=document.createElement('div');
+    d.style.cssText='position:fixed;left:-9999px;height:env('+n+',0px)';
+    document.body.appendChild(d);var h=d.getBoundingClientRect().height;d.remove();return h}
+  function unit(u){var d=document.createElement('div');
+    d.style.cssText='position:fixed;left:-9999px;height:100'+u;
+    document.body.appendChild(d);var h=d.getBoundingClientRect().height;d.remove();return h}
+  function draw(){
+    var dock=document.getElementById('dockA').getBoundingClientRect();
+    var gap=innerHeight-dock.bottom;
+    var dvh=unit('dvh'), svh=unit('svh'), lvh=unit('lvh');
+    var rows=[
+      ['screen', screen.width+' x '+screen.height],
+      ['innerHeight', px(innerHeight)],
+      ['100dvh / svh / lvh', px(dvh)+' / '+px(svh)+' / '+px(lvh)],
+      ['body height:100%', px(document.body.getBoundingClientRect().height)],
+      ['inset top / bottom', px(envv('safe-area-inset-top'))+' / '+px(envv('safe-area-inset-bottom'))],
+      ['standalone', (navigator.standalone===true)+' / '+matchMedia('(display-mode: standalone)').matches],
+      ['GAP under dock', px(gap)],
+      ['scrollY', px(scrollY)]
+    ];
+    document.getElementById('t').innerHTML=rows.map(function(r){
+      var c='';
+      if(r[0].indexOf('GAP')===0) c=Math.abs(gap-10)>6?' class="bad"':' class="good"';
+      else if(r[0].indexOf('inset')===0||r[0].indexOf('100dvh')===0) c=' class="big"';
+      return '<tr><td>'+r[0]+'</td><td'+c+'>'+r[1]+'</td></tr>';
+    }).join('');
   }
-  var dock=document.getElementById('dock').getBoundingClientRect();
-  var dvh=document.createElement('div');
-  dvh.style.cssText='position:fixed;left:-9999px;height:100dvh';
-  document.body.appendChild(dvh);
-  var dvhH=dvh.getBoundingClientRect().height; dvh.remove();
-  var rows=[
-    ['screen', screen.width+' x '+screen.height],
-    ['innerHeight', px(innerHeight)],
-    ['100dvh', px(dvhH)],
-    ['visualViewport', window.visualViewport?px(visualViewport.height):'n/a'],
-    ['inset TOP', px(read('safe-area-inset-top'))],
-    ['inset BOTTOM', px(read('safe-area-inset-bottom'))],
-    ['standalone', (navigator.standalone===true)+' / '+matchMedia('(display-mode: standalone)').matches],
-    ['dock top', px(dock.top)],
-    ['dock bottom', px(dock.bottom)],
-    ['GAP under dock', px(innerHeight-dock.bottom)],
-    ['body padTop', getComputedStyle(document.body).paddingTop],
-    ['UA', navigator.userAgent.slice(0,46)]
-  ];
-  document.getElementById('t').innerHTML = rows.map(function(r,i){
-    var cls = (r[0].indexOf('inset')===0||r[0].indexOf('GAP')===0)?' class="big"':'';
-    return '<tr><td>'+r[0]+'</td><td'+cls+'>'+r[1]+'</td></tr>';
-  }).join('');
+  draw();
+  addEventListener('scroll',draw,{passive:true});
+  addEventListener('resize',draw);
+  if(window.visualViewport){visualViewport.addEventListener('resize',draw);visualViewport.addEventListener('scroll',draw)}
+  setInterval(draw,400);
 </script>
 </body></html>
