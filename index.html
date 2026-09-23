@@ -7,7 +7,7 @@
 <style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Clio in Glass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@500;600&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
   --ground:#eef1f6;--panel:rgba(255,255,255,.62);--panel-solid:#f7f9fc;
@@ -45,12 +45,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .mono{font-family:"Spline Sans Mono",monospace;font-variant-numeric:tabular-nums}
 .lab{font-family:"Spline Sans Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
 .mast{padding:76px 0 30px;max-width:780px}
-.wordmark{display:flex;align-items:center;gap:11px;margin-bottom:32px}
-.wordmark .disc{width:27px;height:27px;border-radius:50%;flex:none;border:2.5px solid var(--pine);
-  background:conic-gradient(from 210deg,transparent 0 62deg,var(--pine) 62deg 360deg);
-  -webkit-mask:radial-gradient(circle,transparent 38%,#000 39%);mask:radial-gradient(circle,transparent 38%,#000 39%)}
-.wordmark b{font-size:15px;font-weight:800;letter-spacing:.34em}
-.wordmark i{font-style:normal;margin-left:auto;font-size:12px;color:var(--faint);font-family:"Spline Sans Mono",monospace}
+.wordmark{display:flex;align-items:center;gap:10px;margin-bottom:32px;color:var(--pine)}
+.wordmark .mark{width:31px;height:31px;flex:none;background-color:currentColor;
+  -webkit-mask:url(img/clio-mark.png) center/contain no-repeat;mask:url(img/clio-mark.png) center/contain no-repeat}
+.wordmark .wm{line-height:1}
+.wordmark b{display:block;font-family:Poppins,Manrope,system-ui,sans-serif;font-weight:600;font-size:19px;letter-spacing:.16em;color:var(--ink)}
+.wordmark i{display:block;font-style:normal;margin-top:4px;font-size:7.5px;font-weight:500;letter-spacing:.24em;color:var(--ink);opacity:.62}
 h1{font-size:clamp(2.5rem,6vw,3.9rem);font-weight:800;letter-spacing:-.035em;line-height:1.04;margin:0 0 18px;text-wrap:balance}
 h1 em{font-style:normal;color:var(--pine)}
 .standfirst{font-size:1.08rem;color:var(--muted);margin:0 0 14px;max-width:64ch}
@@ -99,6 +99,10 @@ footer dd{margin:0}
 @media (max-width:860px){
   .wrap{padding:0 16px 90px}.mast{padding:46px 0 22px}.entry{padding:20px}
   .feats{columns:1}.chapter-count{display:none}.dock .count{display:none}
+  .dock{gap:8px;padding:8px;flex-wrap:nowrap}
+  .dock>.lab:not(.count){display:none}
+  .dock .seg{flex:1 1 0;min-width:0}
+  .dock .seg button{flex:1 1 0;min-width:0;padding:7px 4px;font-size:12px;text-align:center;white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 :where(a,button):focus-visible{outline:2px solid var(--pine);outline-offset:3px;border-radius:6px}
@@ -108,7 +112,7 @@ footer dd{margin:0}
 <body>
 <div class="wrap">
   <header class="mast">
-    <div class="wordmark"><span class="disc"></span><b>CLIO</b><i>The Art is Everyday</i></div>
+    <div class="wordmark"><span class="mark" role="img" aria-label="Clio"></span><span class="wm"><b>CLIO</b><i>THE ART IS EVERYDAY</i></span></div>
     <h1>Every screen of a purchasing ERP, <em>end to end</em>.</h1>
     <p class="standfirst">Clio is a quantity-only purchasing ERP for a laminates importer. It exists to answer one question every morning — <strong>what should we reorder, and when</strong> — by holding each SKU's runway against a 45–75 day lead time from China. There is no money anywhere in it: not a price, not a total, not a currency symbol.</p>
     <p class="standfirst">A complete tour of the shipping product, captured from the live demo in Clio's <strong>glass</strong> design language. Switch theme and device above any screen.</p>
