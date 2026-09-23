@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>edge test</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b1117;color:#fff;
+    font:700 16px/1.5 ui-monospace,Menlo,monospace}
+  /* BLUE: anchored to the viewport bottom (what the dock does today) */
+  #blue{position:fixed;left:0;right:0;bottom:0;height:40px;background:#2563eb;
+    display:flex;align-items:center;justify-content:center;z-index:2}
+  /* RED: anchored to 100lvh — the FULL screen height */
+  #red{position:fixed;left:0;right:0;top:calc(100lvh - 40px);height:40px;background:#dc2626;
+    display:flex;align-items:center;justify-content:center;z-index:3}
+  #n{padding:calc(20px + env(safe-area-inset-top,0px)) 16px}
+  td{padding:2px 0}td:last-child{text-align:right}table{width:100%}
+</style></head>
+<body>
+<div id="n"><table id="t"></table>
+<p style="color:#94a3b8;font-weight:400">If RED sits BELOW blue and touches the bottom edge of the screen, the page can draw there.<br><br>If you only see BLUE, it cannot.</p></div>
+<div id="blue">BLUE = viewport bottom</div>
+<div id="red">RED = 100lvh bottom</div>
+<script>
+  var px=function(v){return Math.round(v)+'px'};
+  function u(x){var d=document.createElement('div');d.style.cssText='position:fixed;left:-9999px;height:100'+x;
+    document.body.appendChild(d);var h=d.getBoundingClientRect().height;d.remove();return h}
+  document.getElementById('t').innerHTML=[
+    ['screen',px(screen.height)],['innerHeight',px(innerHeight)],
+    ['dvh / lvh',px(u('dvh'))+' / '+px(u('lvh'))],
+    ['standalone',String(navigator.standalone===true)]
+  ].map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'}).join('');
+</script>
+</body></html>
