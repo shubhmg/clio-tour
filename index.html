@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A complete UI tour of Clio, a quantity-only purchasing ERP for a laminates importer - every screen, desktop and phone, light and dark.">
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Clio in Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#eef1f6;--panel:rgba(255,255,255,.62);--panel-solid:#f7f9fc;
+  --ink:#131a17;--muted:#5f6b66;--faint:#8b968f;
+  --pine:#357866;--pine-soft:rgba(53,120,102,.12);--brass:#9c7a38;
+  --hair:rgba(19,26,23,.10);--hair-strong:rgba(19,26,23,.18);
+  --shadow:0 4px 18px rgba(16,32,27,.07);--shadow-md:0 12px 34px rgba(16,32,27,.10);--shadow-float:0 16px 44px rgba(16,32,27,.16);
+  --r-card:18px;--r-ctl:11px;
+  --wash-a:rgba(53,120,102,.15);--wash-b:rgba(101,170,151,.13);--wash-c:rgba(156,122,56,.10);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0d1017;--panel:rgba(30,36,50,.58);--panel-solid:#161b25;
+  --ink:#e9eeec;--muted:#9aa5a0;--faint:#6e7a75;
+  --pine:#65aa97;--pine-soft:rgba(101,170,151,.15);--brass:#c79a4e;
+  --hair:rgba(255,255,255,.09);--hair-strong:rgba(255,255,255,.16);
+  --shadow:0 4px 18px rgba(0,0,0,.34);--shadow-md:0 12px 34px rgba(0,0,0,.42);--shadow-float:0 16px 44px rgba(0,0,0,.55);
+  --wash-a:rgba(53,120,102,.24);--wash-b:rgba(101,170,151,.16);--wash-c:rgba(156,122,56,.12);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ground:#0d1017;--panel:rgba(30,36,50,.58);--panel-solid:#161b25;
+  --ink:#e9eeec;--muted:#9aa5a0;--faint:#6e7a75;
+  --pine:#65aa97;--pine-soft:rgba(101,170,151,.15);--brass:#c79a4e;
+  --hair:rgba(255,255,255,.09);--hair-strong:rgba(255,255,255,.16);
+  --shadow:0 4px 18px rgba(0,0,0,.34);--shadow-md:0 12px 34px rgba(0,0,0,.42);--shadow-float:0 16px 44px rgba(0,0,0,.55);
+  --wash-a:rgba(53,120,102,.24);--wash-b:rgba(101,170,151,.16);--wash-c:rgba(156,122,56,.12);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(1100px 720px at 12% -8%,var(--wash-a),transparent 62%),radial-gradient(900px 620px at 92% 2%,var(--wash-b),transparent 60%),radial-gradient(1200px 800px at 50% 108%,var(--wash-c),transparent 62%)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 120px}
+.mono{font-family:"Spline Sans Mono",monospace;font-variant-numeric:tabular-nums}
+.lab{font-family:"Spline Sans Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.mast{padding:76px 0 30px;max-width:780px}
+.wordmark{display:flex;align-items:center;gap:11px;margin-bottom:32px}
+.wordmark .disc{width:27px;height:27px;border-radius:50%;flex:none;border:2.5px solid var(--pine);
+  background:conic-gradient(from 210deg,transparent 0 62deg,var(--pine) 62deg 360deg);
+  -webkit-mask:radial-gradient(circle,transparent 38%,#000 39%);mask:radial-gradient(circle,transparent 38%,#000 39%)}
+.wordmark b{font-size:15px;font-weight:800;letter-spacing:.34em}
+.wordmark i{font-style:normal;margin-left:auto;font-size:12px;color:var(--faint);font-family:"Spline Sans Mono",monospace}
+h1{font-size:clamp(2.5rem,6vw,3.9rem);font-weight:800;letter-spacing:-.035em;line-height:1.04;margin:0 0 18px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--pine)}
+.standfirst{font-size:1.08rem;color:var(--muted);margin:0 0 14px;max-width:64ch}
+.standfirst strong{color:var(--ink);font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.fact{display:flex;align-items:baseline;gap:7px;padding:7px 13px;background:var(--panel);backdrop-filter:blur(14px) saturate(150%);border-radius:var(--r-ctl);box-shadow:var(--shadow)}
+.fact b{font-family:"Spline Sans Mono",monospace;font-weight:600;font-size:13px;color:var(--pine)}
+.fact span{font-size:12px;color:var(--muted)}
+.dock{position:sticky;top:14px;z-index:40;margin:30px 0 10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:9px 10px 9px 17px;border-radius:999px;background:var(--panel);
+  backdrop-filter:blur(30px) saturate(190%);-webkit-backdrop-filter:blur(30px) saturate(190%);
+  box-shadow:var(--shadow-float),inset 0 1px 0 rgba(255,255,255,.5)}
+.seg{display:flex;gap:3px;padding:3px;border-radius:999px;background:rgba(127,140,134,.16)}
+.seg button{font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:0;background:transparent;color:var(--muted);padding:6px 15px;border-radius:999px;transition:background .18s,color .18s}
+@media (hover:hover) and (pointer:fine){.seg button:hover{color:var(--ink)}}
+.seg button[aria-pressed="true"]{background:var(--pine);color:#fff;box-shadow:0 2px 8px rgba(53,120,102,.32)}
+.dock .count{margin-left:auto;padding-right:8px}
+.index{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(168px,100%),1fr));gap:3px;margin:18px 0 56px}
+.index a{display:flex;align-items:center;padding:11px 14px;text-decoration:none;background:var(--panel);backdrop-filter:blur(12px);border-radius:9px;color:var(--ink);font-size:13.5px;font-weight:600;transition:background .16s,color .16s}
+@media (hover:hover) and (pointer:fine){.index a:hover{background:var(--pine);color:#fff}}
+.chapter{margin:0 0 20px;scroll-margin-top:86px}
+.chapter-head{position:relative;padding:26px 0 18px;max-width:70ch}
+.chapter-head h2{font-size:1.9rem;font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+.chapter-head p{margin:0;color:var(--muted);font-size:.98rem}
+.chapter-count{position:absolute;top:30px;right:0;font-family:"Spline Sans Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.entry{margin:0 0 26px;padding:30px;border-radius:var(--r-card);background:var(--panel);
+  backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:var(--shadow-md);scroll-margin-top:86px}
+.idx{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.idx .num{font-family:"Spline Sans Mono",monospace;font-size:11px;font-weight:600;color:#fff;background:var(--pine);padding:3px 8px;border-radius:6px;letter-spacing:.06em}
+.entry h3{font-size:1.6rem;font-weight:800;letter-spacing:-.026em;margin:0 0 9px;line-height:1.16}
+.purpose{font-size:1rem;color:var(--muted);margin:0;max-width:70ch}
+.shots{margin:24px 0 0}
+.desk img,.phone img{display:block;width:100%;height:auto}
+.desk{margin:0;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-md),0 0 0 1px var(--hair);background:var(--panel-solid)}
+.phone{margin:0 auto;width:min(330px,100%);border-radius:24px;overflow:hidden;box-shadow:var(--shadow-float),0 0 0 1px var(--hair-strong);background:var(--panel-solid)}
+[data-shots="light"] .s-dark,[data-shots="dark"] .s-light{display:none}
+[data-view="desktop"] .phone,[data-view="phone"] .desk{display:none}
+.feats{margin:26px 0 0;padding:0;list-style:none;columns:2;column-gap:34px}
+.feats li{position:relative;padding:8px 0 8px 20px;font-size:.93rem;border-top:1px solid var(--hair);break-inside:avoid}
+.feats li::before{content:"";position:absolute;left:2px;top:1em;width:5px;height:5px;border-radius:1px;background:var(--brass)}
+footer{margin-top:60px;padding:30px 34px;border-radius:var(--r-card);background:var(--panel);backdrop-filter:blur(18px);box-shadow:var(--shadow);font-size:.86rem;color:var(--muted)}
+footer h3{margin:0 0 14px;font-size:.95rem;font-weight:700;color:var(--ink)}
+footer dl{display:grid;grid-template-columns:auto 1fr;gap:7px 20px;margin:0}
+footer dt{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+footer dd{margin:0}
+@media (max-width:860px){
+  .wrap{padding:0 16px 90px}.mast{padding:46px 0 22px}.entry{padding:20px}
+  .feats{columns:1}.chapter-count{display:none}.dock .count{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+:where(a,button):focus-visible{outline:2px solid var(--pine);outline-offset:3px;border-radius:6px}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="wordmark"><span class="disc"></span><b>CLIO</b><i>The Art is Everyday</i></div>
+    <h1>Every screen of a purchasing ERP, <em>end to end</em>.</h1>
+    <p class="standfirst">Clio is a quantity-only purchasing ERP for a laminates importer. It exists to answer one question every morning — <strong>what should we reorder, and when</strong> — by holding each SKU's runway against a 45–75 day lead time from China. There is no money anywhere in it: not a price, not a total, not a currency symbol.</p>
+    <p class="standfirst">A complete tour of the shipping product, captured from the live demo in Clio's <strong>glass</strong> design language. Switch theme and device above any screen.</p>
+    <div class="facts">
+      <div class="fact"><b>28</b><span>screens</span></div>
+      <div class="fact"><b>112</b><span>captures</span></div>
+      <div class="fact"><b>6</b><span>chapters</span></div>
+      <div class="fact"><b>2880×1800</b><span>desktop @2x</span></div>
+      <div class="fact"><b>1170×2532</b><span>phone @3x</span></div>
+      <div class="fact"><b>41</b><span>months of data</span></div>
+    </div>
+  </header>
+
+  <div class="dock" role="group" aria-label="Display options">
+    <span class="lab">Showing</span>
+    <div class="seg" role="group" aria-label="Interface theme">
+      <button type="button" data-shots-set="light" aria-pressed="true">Light UI</button>
+      <button type="button" data-shots-set="dark" aria-pressed="false">Dark UI</button>
+    </div>
+    <div class="seg" role="group" aria-label="Device">
+      <button type="button" data-view-set="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-view-set="phone" aria-pressed="false">Phone</button>
+    </div>
+    <span class="lab count" data-caption>1440 &times; 900 &middot; captured at 2&times;</span>
+  </div>
+
+  <nav class="index" aria-label="Jump to a chapter"><a href="#decide">The decision</a><a href="#masters">The catalogue</a><a href="#buying">Buying</a><a href="#stock">Stock</a><a href="#reports">Reading the year</a><a href="#admin">Setup</a></nav>
+  
+<section class="chapter" id="decide">
+  <div class="chapter-head">
+    <h2>The decision</h2>
+    <p>Clio exists to answer one question every morning — what should we reorder, and when. These are the screens that answer it.</p>
+    <span class="chapter-count">4 screens</span>
+  </div>
+  
+<section class="entry" id="01-dashboard">
+  <header class="entry-head">
+    <div class="idx"><span class="num">01</span></div>
+    <h3>Dashboard</h3>
+    <p class="purpose">The morning briefing: how many SKUs need ordering today, what capital is frozen, what is at sea, and whether sales are pacing.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/01-dashboard.jpg" alt="Dashboard — desktop, light" loading="eager" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/01-dashboard.jpg"  alt="Dashboard — desktop, dark"  loading="eager" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/01-dashboard.jpg" alt="Dashboard — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/01-dashboard.jpg"  alt="Dashboard — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Four counts lead — to order now, due this month, dead stock, on the water</li><li>Order-today panel ranks the six most urgent SKUs, each with a runway-vs-lead bar and its order-by date</li><li>Stock health states one sentence over a running/slow/dead composition bar</li><li>Lead-time pressure prints the thesis: you hold ~X days of stock but need Y days to reorder from China</li></ul>
+</section>
+<section class="entry" id="02-purchasing">
+  <header class="entry-head">
+    <div class="idx"><span class="num">02</span></div>
+    <h3>Purchasing</h3>
+    <p class="purpose">The order desk. Decide, factory by factory, what goes on a container this week so nothing runs dry before the next one lands.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/02-purchasing.jpg" alt="Purchasing — desktop, light" loading="eager" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/02-purchasing.jpg"  alt="Purchasing — desktop, dark"  loading="eager" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/02-purchasing.jpg" alt="Purchasing — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/02-purchasing.jpg"  alt="Purchasing — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>position = on hand + inbound; runout = position ÷ daily pace; order-by = runout − lead time</li><li>Honest buckets: now, soon, healthy — plus “No sales” and “Set lead time” rather than a fake number</li><li>Factory sections start collapsed; the headers are the summary you scan first</li><li>Ticked rows collect into an order basket</li></ul>
+</section>
+<section class="entry" id="03-purchasing-story">
+  <header class="entry-head">
+    <div class="idx"><span class="num">03</span></div>
+    <h3>A SKU’s story</h3>
+    <p class="purpose">Why this SKU is on the list, in a sentence — then the arithmetic behind it.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/03-purchasing-story.jpg" alt="A SKU’s story — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/03-purchasing-story.jpg"  alt="A SKU’s story — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/03-purchasing-story.jpg" alt="A SKU’s story — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/03-purchasing-story.jpg"  alt="A SKU’s story — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>“Stock lasts 25 days, a reorder takes 55 days to land — you’d be out for 30 days”</li><li>A timeline with the shortfall hatched and the landing date marked</li><li>A cover box with a quantity slider: what ordering N covers you to, and when the next order falls due</li><li>Inline fixes for the two things that block planning — pick the factory, set its lead time</li></ul>
+</section>
+<section class="entry" id="04-purchasing-settings">
+  <header class="entry-head">
+    <div class="idx"><span class="num">04</span></div>
+    <h3>Planning settings</h3>
+    <p class="purpose">The assumptions behind every order-by date, with the arithmetic stated rather than implied.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/04-purchasing-settings.jpg" alt="Planning settings — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/04-purchasing-settings.jpg"  alt="Planning settings — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/04-purchasing-settings.jpg" alt="Planning settings — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/04-purchasing-settings.jpg"  alt="Planning settings — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Reorder every 30/45/60/90 days — each order is sized to last that long after it lands</li><li>Pace: recent (last 60 days ÷ 60) or last year (the same 60 days a year ago), with the real date window shown</li><li>A min-stock floor beneath the pace model, for SKUs with no sales to judge by</li><li>Units or packs — the app-wide switch</li></ul>
+</section>
+</section>
+<section class="chapter" id="masters">
+  <div class="chapter-head">
+    <h2>The catalogue</h2>
+    <p>Catalog → design group → SKU. The group is the hub: people reason about designs, not lone SKUs.</p>
+    <span class="chapter-count">3 screens</span>
+  </div>
+  
+<section class="entry" id="05-products">
+  <header class="entry-head">
+    <div class="idx"><span class="num">05</span></div>
+    <h3>Products</h3>
+    <p class="purpose">Find any SKU and see which design group and which factory it belongs to.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/05-products.jpg" alt="Products — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/05-products.jpg"  alt="Products — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/05-products.jpg" alt="Products — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/05-products.jpg"  alt="Products — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Items and Designs tabs, server-side search across name and SKU</li><li>Scope by catalog, group and factory — each with an explicit “No catalog / No factory” bucket</li><li>Rows expand to ledger, design, edit and delete</li></ul>
+</section>
+<section class="entry" id="06-catalogs">
+  <header class="entry-head">
+    <div class="idx"><span class="num">06</span></div>
+    <h3>Catalogs</h3>
+    <p class="purpose">The physical sample folders that sit at the top of the hierarchy.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/06-catalogs.jpg" alt="Catalogs — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/06-catalogs.jpg"  alt="Catalogs — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/06-catalogs.jpg" alt="Catalogs — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/06-catalogs.jpg"  alt="Catalogs — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Each row carries live group and SKU counts</li><li>Focus sets the app-wide scope to that catalog and jumps to Purchasing</li><li>Deleting a catalog unlinks its groups rather than destroying them</li></ul>
+</section>
+<section class="entry" id="07-parties">
+  <header class="entry-head">
+    <div class="idx"><span class="num">07</span></div>
+    <h3>Parties</h3>
+    <p class="purpose">The Chinese factories you buy from and the Indian customers you sell to.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/07-parties.jpg" alt="Parties — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/07-parties.jpg"  alt="Parties — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/07-parties.jpg" alt="Parties — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/07-parties.jpg"  alt="Parties — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Supplier / customer switch with infinite scroll</li><li>A supplier opens its products builder; a customer opens its ledger</li><li>The supplier record holds the lead time — the other half of every order-by date</li></ul>
+</section>
+</section>
+<section class="chapter" id="buying">
+  <div class="chapter-head">
+    <h2>Buying</h2>
+    <p>A purchase order becomes a factory order, rides a container, and lands as stock. One chain, four screens.</p>
+    <span class="chapter-count">8 screens</span>
+  </div>
+  
+<section class="entry" id="08-orders">
+  <header class="entry-head">
+    <div class="idx"><span class="num">08</span></div>
+    <h3>Purchase Orders</h3>
+    <p class="purpose">Factory orders from placed, through ready, to loaded into a container.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/08-orders.jpg" alt="Purchase Orders — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/08-orders.jpg"  alt="Purchase Orders — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/08-orders.jpg" alt="Purchase Orders — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/08-orders.jpg"  alt="Purchase Orders — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Grouped by order date, one row per factory slice</li><li>A ready bar appears the moment ordered, ready and shipped stop agreeing</li><li>Selecting ready orders raises a bar to consolidate them into one container</li></ul>
+</section>
+<section class="entry" id="09-orders-sheet">
+  <header class="entry-head">
+    <div class="idx"><span class="num">09</span></div>
+    <h3>Everything for one order</h3>
+    <p class="purpose">Tapping a row opens every action for it in one place — no three-dot menu to hunt for.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/09-orders-sheet.jpg" alt="Everything for one order — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/09-orders-sheet.jpg"  alt="Everything for one order — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/09-orders-sheet.jpg" alt="Everything for one order — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/09-orders-sheet.jpg"  alt="Everything for one order — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>The state change is the primary button: Mark ready, or Goods received</li><li>Edit the order, download the factory’s Excel, open the underlying voucher</li><li>Destructive actions sit last and read red</li></ul>
+</section>
+<section class="entry" id="10-order-new">
+  <header class="entry-head">
+    <div class="idx"><span class="num">10</span></div>
+    <h3>Raising an order</h3>
+    <p class="purpose">One purchase order means one supplier. Raised on exactly the screen a purchase is entered on.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/10-order-new.jpg" alt="Raising an order — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/10-order-new.jpg"  alt="Raising an order — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/10-order-new.jpg" alt="Raising an order — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/10-order-new.jpg"  alt="Raising an order — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Pick the supplier first, then search every SKU</li><li>Adding a product the supplier doesn’t make prompts rather than blocking it — a one-off or a new factory is legitimate</li><li>Quantities step in the SKU’s own pack, and store in base units</li></ul>
+</section>
+<section class="entry" id="11-containers">
+  <header class="entry-head">
+    <div class="idx"><span class="num">11</span></div>
+    <h3>Containers</h3>
+    <p class="purpose">Every container sailing China → warehouse, grouped by when it lands.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/11-containers.jpg" alt="Containers — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/11-containers.jpg"  alt="Containers — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/11-containers.jpg" alt="Containers — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/11-containers.jpg"  alt="Containers — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>The voyage rail draws itself on load, the ship riding its real position along the route</li><li>Colour only when it means something — amber arriving soon, brick overdue</li><li>Voyage time is a business-wide setting, editable in place</li></ul>
+</section>
+<section class="entry" id="12-containers-sheet">
+  <header class="entry-head">
+    <div class="idx"><span class="num">12</span></div>
+    <h3>Receiving a container</h3>
+    <p class="purpose">Marking a container arrived is the moment goods become stock.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/12-containers-sheet.jpg" alt="Receiving a container — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/12-containers-sheet.jpg"  alt="Receiving a container — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/12-containers-sheet.jpg" alt="Receiving a container — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/12-containers-sheet.jpg"  alt="Receiving a container — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>It adds the units into the destination warehouse and posts a purchase invoice per factory</li><li>Reopen pulls the stock back out and cancels those invoices</li><li>The same sheet carries the Excel export and the edit</li></ul>
+</section>
+<section class="entry" id="13-purchases">
+  <header class="entry-head">
+    <div class="idx"><span class="num">13</span></div>
+    <h3>Purchases</h3>
+    <p class="purpose">The register of goods actually received — quantity only, no money anywhere.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/13-purchases.jpg" alt="Purchases — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/13-purchases.jpg"  alt="Purchases — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/13-purchases.jpg" alt="Purchases — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/13-purchases.jpg"  alt="Purchases — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Date-grouped rows, each listing every line with its quantity and unit</li><li>Swipe a row to cancel, with a mandatory reason</li><li>Scope resolves against the line items, not just the header</li></ul>
+</section>
+<section class="entry" id="14-sales">
+  <header class="entry-head">
+    <div class="idx"><span class="num">14</span></div>
+    <h3>Sales</h3>
+    <p class="purpose">Goods dispatched to customers — the outgoing movement that defines velocity.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/14-sales.jpg" alt="Sales — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/14-sales.jpg"  alt="Sales — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/14-sales.jpg" alt="Sales — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/14-sales.jpg"  alt="Sales — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>These postings are the 60-day ledger that daily pace is computed from</li><li>Same row grammar as Purchases</li><li>Cancelling asks why</li></ul>
+</section>
+<section class="entry" id="15-quick-purchase">
+  <header class="entry-head">
+    <div class="idx"><span class="num">15</span></div>
+    <h3>Entering a purchase</h3>
+    <p class="purpose">The entry screen shared by purchases, sales, transfers and orders.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/15-quick-purchase.jpg" alt="Entering a purchase — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/15-quick-purchase.jpg"  alt="Entering a purchase — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/15-quick-purchase.jpg" alt="Entering a purchase — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/15-quick-purchase.jpg"  alt="Entering a purchase — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Search adds a line; the bar keeps focus so you can rattle off a whole invoice</li><li>Quantities can be typed in units or in packs — storage is always base units</li><li>No rate, no tax, no total: Clio is quantity-only by design</li></ul>
+</section>
+</section>
+<section class="chapter" id="stock">
+  <div class="chapter-head">
+    <h2>Stock</h2>
+    <p>What you hold, where it is, what is moving, and what has stopped.</p>
+    <span class="chapter-count">5 screens</span>
+  </div>
+  
+<section class="entry" id="16-stock-health">
+  <header class="entry-head">
+    <div class="idx"><span class="num">16</span></div>
+    <h3>Stock Health</h3>
+    <p class="purpose">What is selling, what is over-stocked, and what is frozen — measured on sales.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/16-stock-health.jpg" alt="Stock Health — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/16-stock-health.jpg"  alt="Stock Health — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/16-stock-health.jpg" alt="Stock Health — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/16-stock-health.jpg"  alt="Stock Health — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Dead = no sale in 90 days · Slow = over 120 days of cover · Running = selling through</li><li>The three tiles are the filter; tapping one narrows the list and tapping it again clears</li><li>Counts recount from whatever scope is applied, so the tiles can never disagree with the list</li></ul>
+</section>
+<section class="entry" id="17-stock-health-catalog">
+  <header class="entry-head">
+    <div class="idx"><span class="num">17</span></div>
+    <h3>Health by catalog</h3>
+    <p class="purpose">Health rolled up the way the catalogue is actually organised, worst first.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/17-stock-health-catalog.jpg" alt="Health by catalog — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/17-stock-health-catalog.jpg"  alt="Health by catalog — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/17-stock-health-catalog.jpg" alt="Health by catalog — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/17-stock-health-catalog.jpg"  alt="Health by catalog — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Collapsed by default — at 1,500 SKUs the rollup is the answer, the SKUs are the drill-in</li><li>Each header carries its own dead/slow counts and a mix bar</li><li>Opening a catalog reveals its design groups; picking one switches to the design view with that group open</li></ul>
+</section>
+<section class="entry" id="18-inventory">
+  <header class="entry-head">
+    <div class="idx"><span class="num">18</span></div>
+    <h3>Stock &amp; Warehouses</h3>
+    <p class="purpose">The live position across warehouses, plus the warehouse master itself.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/18-inventory.jpg" alt="Stock &amp; Warehouses — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/18-inventory.jpg"  alt="Stock &amp; Warehouses — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/18-inventory.jpg" alt="Stock &amp; Warehouses — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/18-inventory.jpg"  alt="Stock &amp; Warehouses — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Drill catalog → design → SKU with share meters and low-stock flags</li><li>Orders vs Stock shows the coverage gap per SKU with the buffer maths explained</li><li>Stock exceptions track negative-stock and transfer shortages to resolution</li></ul>
+</section>
+<section class="entry" id="19-stock-transfers">
+  <header class="entry-head">
+    <div class="idx"><span class="num">19</span></div>
+    <h3>Stock Transfers</h3>
+    <p class="purpose">Movements between warehouses — why one depot is short while the business is not.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/19-stock-transfers.jpg" alt="Stock Transfers — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/19-stock-transfers.jpg"  alt="Stock Transfers — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/19-stock-transfers.jpg" alt="Stock Transfers — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/19-stock-transfers.jpg"  alt="Stock Transfers — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Filter by date and by lane, with a route summary when a filter is on</li><li>Filtered views go always-live rather than reading the cache</li></ul>
+</section>
+<section class="entry" id="20-physical-stock">
+  <header class="entry-head">
+    <div class="idx"><span class="num">20</span></div>
+    <h3>Physical Stock</h3>
+    <p class="purpose">Every time the books were corrected to what is actually on the shelf.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/20-physical-stock.jpg" alt="Physical Stock — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/20-physical-stock.jpg"  alt="Physical Stock — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/20-physical-stock.jpg" alt="Physical Stock — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/20-physical-stock.jpg"  alt="Physical Stock — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Each row leads with the net adjustment, up or down</li><li>Counts can be entered in packs or base units</li><li>This is what keeps net stock honest enough to divide by velocity</li></ul>
+</section>
+</section>
+<section class="chapter" id="reports">
+  <div class="chapter-head">
+    <h2>Reading the year</h2>
+    <p>Demand history, seasonality and the lines that carry the business.</p>
+    <span class="chapter-count">5 screens</span>
+  </div>
+  
+<section class="entry" id="23-report-sales">
+  <header class="entry-head">
+    <div class="idx"><span class="num">23</span></div>
+    <h3>Sales Report</h3>
+    <p class="purpose">Where the units went: how many invoices, to whom, and which designs moved.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/23-report-sales.jpg" alt="Sales Report — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/23-report-sales.jpg"  alt="Sales Report — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/23-report-sales.jpg" alt="Sales Report — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/23-report-sales.jpg"  alt="Sales Report — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Indian financial-year presets, plus explicit date ranges</li><li>Compare against last year, with equal windows stated</li><li>Breakdown across items, groups, catalogs and customers, drillable by breadcrumb</li></ul>
+</section>
+<section class="entry" id="24-report-purchases">
+  <header class="entry-head">
+    <div class="idx"><span class="num">24</span></div>
+    <h3>Purchases Report</h3>
+    <p class="purpose">Real import cadence per factory, against the lead times Purchasing assumes.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/24-report-purchases.jpg" alt="Purchases Report — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/24-report-purchases.jpg"  alt="Purchases Report — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/24-report-purchases.jpg" alt="Purchases Report — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/24-report-purchases.jpg"  alt="Purchases Report — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Invoice and vendor counts with year-on-year deltas</li><li>Monthly bar chart</li><li>Top vendors by invoice count</li></ul>
+</section>
+<section class="entry" id="25-report-inventory">
+  <header class="entry-head">
+    <div class="idx"><span class="num">25</span></div>
+    <h3>Inventory Report</h3>
+    <p class="purpose">Which products carry the business, and which have quietly stopped.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/25-report-inventory.jpg" alt="Inventory Report — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/25-report-inventory.jpg"  alt="Inventory Report — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/25-report-inventory.jpg" alt="Inventory Report — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/25-report-inventory.jpg"  alt="Inventory Report — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Hero products by units sold, with year-on-year movement</li><li>Dead stock grouped by urgency — critical over 180 days idle, high 90–180, watch under 90</li><li>Each row shows quantity, last-moved date, and days idle</li></ul>
+</section>
+<section class="entry" id="26-sales-graph">
+  <header class="entry-head">
+    <div class="idx"><span class="num">26</span></div>
+    <h3>Finished Goods Sales</h3>
+    <p class="purpose">Three financial years side by side, by catalog or by design.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/26-sales-graph.jpg" alt="Finished Goods Sales — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/26-sales-graph.jpg"  alt="Finished Goods Sales — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/26-sales-graph.jpg" alt="Finished Goods Sales — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/26-sales-graph.jpg"  alt="Finished Goods Sales — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Each card leads with this year’s units and the year-on-year delta — every chart scales its own axis, so the number is what makes them comparable</li><li>Period, warehouse and which years to show sit behind one settings control</li><li>Tap any bar to inspect that month</li></ul>
+</section>
+<section class="entry" id="27-sales-breakdown">
+  <header class="entry-head">
+    <div class="idx"><span class="num">27</span></div>
+    <h3>Inside a catalog</h3>
+    <p class="purpose">One catalog’s year, its designs ranked, and what the table will not tell you.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/27-sales-breakdown.jpg" alt="Inside a catalog — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/27-sales-breakdown.jpg"  alt="Inside a catalog — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/27-sales-breakdown.jpg" alt="Inside a catalog — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/27-sales-breakdown.jpg"  alt="Inside a catalog — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Tap a bar for a per-year readout of that month</li><li>“Worth knowing” surfaces concentration risk — a group leaning on a single SKU</li><li>Each design row carries best month, how many of its SKUs are selling, and its seasonal peak</li></ul>
+</section>
+</section>
+<section class="chapter" id="admin">
+  <div class="chapter-head">
+    <h2>Setup</h2>
+    <p>Getting 1,500 SKUs in, and who is allowed to touch them.</p>
+    <span class="chapter-count">3 screens</span>
+  </div>
+  
+<section class="entry" id="21-import">
+  <header class="entry-head">
+    <div class="idx"><span class="num">21</span></div>
+    <h3>Import</h3>
+    <p class="purpose">The Excel round-trip: pull the catalogue out, edit it, push it back.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/21-import.jpg" alt="Import — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/21-import.jpg"  alt="Import — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/21-import.jpg" alt="Import — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/21-import.jpg"  alt="Import — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Download current products, or start from a blank file</li><li>Map your own columns onto Clio’s ten fields; the mapping is remembered</li><li>Review resolves every row as create or update before a single write, then imports in chunks</li></ul>
+</section>
+<section class="entry" id="22-team">
+  <header class="entry-head">
+    <div class="idx"><span class="num">22</span></div>
+    <h3>Team</h3>
+    <p class="purpose">Who can open Clio and what they can do.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/22-team.jpg" alt="Team — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/22-team.jpg"  alt="Team — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/22-team.jpg" alt="Team — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/22-team.jpg"  alt="Team — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Owner, admin, manager, viewer — all money-free</li><li>Deactivate without removing</li><li>Per-module permissions behind the member form</li></ul>
+</section>
+<section class="entry" id="28-settings">
+  <header class="entry-head">
+    <div class="idx"><span class="num">28</span></div>
+    <h3>Settings</h3>
+    <p class="purpose">Appearance, the business record, and the one purchasing feature flag.</p>
+  </header>
+  <div class="shots">
+    <figure class="desk">
+      <img class="s-light" src="img/light/desktop/28-settings.jpg" alt="Settings — desktop, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/desktop/28-settings.jpg"  alt="Settings — desktop, dark"  loading="lazy" decoding="async">
+    </figure>
+    <figure class="phone">
+      <img class="s-light" src="img/light/mobile/28-settings.jpg" alt="Settings — phone, light" loading="lazy" decoding="async">
+      <img class="s-dark"  src="img/dark/mobile/28-settings.jpg"  alt="Settings — phone, dark"  loading="lazy" decoding="async">
+    </figure>
+  </div>
+  <ul class="feats"><li>Design languages drawn as miniature app mocks — glass is the default</li><li>Accent colour, font and display sizing</li><li>Shipping containers on or off reshapes the whole order → container → arrival chain</li></ul>
+</section>
+</section>
+
+  <footer>
+    <h3>How this was captured</h3>
+    <dl>
+      <dt>Source</dt><dd>The live seeded demo — 3 catalogs, 20 SKUs, 4 factories, 41 months of purchase and sale history, so every runway, order-by date and velocity on screen is computed from real movement rather than mocked.</dd>
+      <dt>Theme</dt><dd>Clio's <span class="mono">glass</span> design language, pinned before first paint via the app's own appearance store and asserted on every capture.</dd>
+      <dt>Method</dt><dd>Playwright driving Chrome. Desktop 1440×900 at 2× and phone 390×844 at 3× with a real iOS user-agent and touch enabled, so mobile shots show the floating dock rather than a squeezed desktop. Screens that only exist after an interaction — action sheets, the SKU story, the catalog drill-down — are driven to that state before the shot.</dd>
+      <dt>Money</dt><dd>Deliberately absent everywhere, including voucher entry. Quantity is the only currency.</dd>
+    </dl>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  function media(){try{return matchMedia('(prefers-color-scheme: dark)').matches}catch(e){return false}}
+  var attr=root.getAttribute('data-theme');
+  var dark=attr==='dark'||(attr!=='light'&&media());
+  function setShots(v){root.setAttribute('data-shots',v);
+    document.querySelectorAll('[data-shots-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-shots-set')===v))})}
+  setShots(dark?'dark':'light');
+  document.querySelectorAll('[data-shots-set]').forEach(function(b){b.addEventListener('click',function(){setShots(b.getAttribute('data-shots-set'))})});
+  var cap=document.querySelector('[data-caption]');
+  var CAPTION={desktop:'1440 \u00d7 900 \u00b7 captured at 2\u00d7',phone:'390 \u00d7 844 \u00b7 captured at 3\u00d7'};
+  function setView(v){root.setAttribute('data-view',v);if(cap)cap.textContent=CAPTION[v];
+    document.querySelectorAll('[data-view-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-view-set')===v))})}
+  setView('desktop');
+  document.querySelectorAll('[data-view-set]').forEach(function(b){b.addEventListener('click',function(){
+    var here=null,top=null;
+    document.querySelectorAll('.entry').forEach(function(e){var r=e.getBoundingClientRect();if(here===null&&r.bottom>80){here=e;top=r.top}});
+    setView(b.getAttribute('data-view-set'));
+    if(here)window.scrollTo({top:here.offsetTop-top,behavior:'instant'});
+  })});
+})();
+</script>
+</body>
+</html>
