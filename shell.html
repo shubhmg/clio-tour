@@ -26,7 +26,11 @@
      height:100% inside an auto/min-height parent resolves to auto, so the
      scroller grows to its content and overflows the screen. */
   body.fixed #scroll{height:100dvh}
-  #fixbtn{display:block;width:100%;margin:8px 0 10px;padding:12px;border:0;border-radius:10px;
+  /* DOCK FIX: in a standalone PWA the home indicator is already OUTSIDE the
+     web view, so adding env(safe-area-inset-bottom) lifts the dock twice. */
+  body.dockfix #dock{bottom:10px}
+  body.dockfix #scroll{padding-bottom:12px}
+  #fixbtn,#dockbtn{display:block;width:100%;margin:6px 0;padding:11px;border:0;border-radius:10px;
     background:#1d4ed8;color:#fff;font:700 14px ui-monospace,Menlo,monospace}
   body.fixed #fixbtn{background:#166534}
   #dock{position:fixed;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));
@@ -36,7 +40,8 @@
 <body>
 <div id="shell"><div id="scroll">
   <h1>CLIO SHELL PROBE &mdash; ADD TO HOME SCREEN, then open it from there</h1>
-  <button id="fixbtn">TAP TO APPLY FIX</button><table id="t"></table>
+  <button id="fixbtn">1. TAP: height fix</button>
+  <button id="dockbtn" style="background:#7c3aed">2. TAP: dock fix (drop bottom inset)</button><table id="t"></table>
   <div class="card">filler 1</div><div class="card">filler 2</div>
   <div class="card">filler 3</div><div class="card">filler 4</div>
   
@@ -76,11 +81,19 @@
       return '<tr><td>'+r[0]+'</td><td'+c+'>'+r[1]+'</td></tr>';
     }).join('');
   }
+  var dbtn=document.getElementById('dockbtn');
+  dbtn.onclick=function(){
+    document.body.classList.toggle('dockfix');
+    dbtn.textContent=document.body.classList.contains('dockfix')
+      ? '2. DOCK FIX ON \u2014 tap to undo' : '2. TAP: dock fix (drop bottom inset)';
+    dbtn.style.background=document.body.classList.contains('dockfix')?'#166534':'#7c3aed';
+    draw();
+  };
   var btn=document.getElementById('fixbtn');
   btn.onclick=function(){
     document.body.classList.toggle('fixed');
     btn.textContent=document.body.classList.contains('fixed')
-      ? 'FIX APPLIED \u2014 tap to undo' : 'TAP TO APPLY FIX';
+      ? '1. HEIGHT FIX ON \u2014 tap to undo' : '1. TAP: height fix';
     draw();
   };
   draw(); sc.addEventListener('scroll',draw,{passive:true});
