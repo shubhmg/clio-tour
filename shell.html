@@ -22,6 +22,13 @@
   h1{font-size:12px;margin:0 0 8px;color:#4ade80}
   .card{background:#18212b;border-radius:12px;padding:14px;margin:10px 0}
   .last{background:#2a2350;border:2px solid #a78bfa}
+  /* THE FIX: a DEFINITE height tied to the dynamic viewport. Without it,
+     height:100% inside an auto/min-height parent resolves to auto, so the
+     scroller grows to its content and overflows the screen. */
+  body.fixed #scroll{height:100dvh}
+  #fixbtn{display:block;width:100%;margin:8px 0 10px;padding:12px;border:0;border-radius:10px;
+    background:#1d4ed8;color:#fff;font:700 14px ui-monospace,Menlo,monospace}
+  body.fixed #fixbtn{background:#166534}
   #dock{position:fixed;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));
     height:64px;border-radius:999px;background:#14532d;border:2px solid #4ade80;
     display:flex;align-items:center;justify-content:center;color:#d1fae5;font-size:11px;z-index:200}
@@ -29,11 +36,11 @@
 <body>
 <div id="shell"><div id="scroll">
   <h1>CLIO SHELL PROBE &mdash; scroll to the very bottom</h1>
-  <table id="t"></table>
+  <button id="fixbtn">TAP TO APPLY FIX</button><table id="t"></table>
   <div class="card">filler 1</div><div class="card">filler 2</div>
   <div class="card">filler 3</div><div class="card">filler 4</div>
-  <div class="card">filler 5</div><div class="card">filler 6</div>
-  <div class="card">filler 7</div><div class="card">filler 8</div>
+  
+  
   <div class="card last">LAST CARD &mdash; you should be able to see ALL of this box, with its purple border complete on all four sides.</div>
 </div></div>
 <div id="dock">dock &mdash; same CSS as Clio</div>
@@ -64,6 +71,13 @@
       return '<tr><td>'+r[0]+'</td><td'+c+'>'+r[1]+'</td></tr>';
     }).join('');
   }
+  var btn=document.getElementById('fixbtn');
+  btn.onclick=function(){
+    document.body.classList.toggle('fixed');
+    btn.textContent=document.body.classList.contains('fixed')
+      ? 'FIX APPLIED \u2014 tap to undo' : 'TAP TO APPLY FIX';
+    draw();
+  };
   draw(); sc.addEventListener('scroll',draw,{passive:true});
   addEventListener('resize',draw); setInterval(draw,400);
 </script>
