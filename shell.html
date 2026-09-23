@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Clio shell probe</title>
+<style>
+  /* ── copied from Clio: locked page, inner scroller, floating dock ── */
+  *{box-sizing:border-box}
+  html{height:100%;overflow:hidden}
+  body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;
+    padding-left:env(safe-area-inset-left,0);padding-right:env(safe-area-inset-right,0);
+    background:#0b1117;color:#e7edf3;font:600 13px/1.4 ui-monospace,Menlo,monospace}
+  #shell{min-height:100dvh}
+  #scroll{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:none;
+    padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px))}
+  #scroll::after{content:'';display:block;height:76px}
+  table{border-collapse:collapse;width:100%}td{padding:2px 0}
+  td:first-child{color:#8fa3b5}td:last-child{text-align:right;color:#fff;font-variant-numeric:tabular-nums}
+  .bad{color:#f87171}.good{color:#4ade80}.big{color:#fbbf24}
+  h1{font-size:12px;margin:0 0 8px;color:#4ade80}
+  .card{background:#18212b;border-radius:12px;padding:14px;margin:10px 0}
+  .last{background:#2a2350;border:2px solid #a78bfa}
+  #dock{position:fixed;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));
+    height:64px;border-radius:999px;background:#14532d;border:2px solid #4ade80;
+    display:flex;align-items:center;justify-content:center;color:#d1fae5;font-size:11px;z-index:200}
+</style></head>
+<body>
+<div id="shell"><div id="scroll">
+  <h1>CLIO SHELL PROBE &mdash; scroll to the very bottom</h1>
+  <table id="t"></table>
+  <div class="card">filler 1</div><div class="card">filler 2</div>
+  <div class="card">filler 3</div><div class="card">filler 4</div>
+  <div class="card">filler 5</div><div class="card">filler 6</div>
+  <div class="card">filler 7</div><div class="card">filler 8</div>
+  <div class="card last">LAST CARD &mdash; you should be able to see ALL of this box, with its purple border complete on all four sides.</div>
+</div></div>
+<div id="dock">dock &mdash; same CSS as Clio</div>
+<script>
+  var px=function(v){return Math.round(v)+'px'};
+  function unit(u){var d=document.createElement('div');
+    d.style.cssText='position:fixed;left:-9999px;height:100'+u;
+    document.body.appendChild(d);var h=d.getBoundingClientRect().height;d.remove();return h}
+  var sc=document.getElementById('scroll');
+  function draw(){
+    var s=sc.getBoundingClientRect(), dock=document.getElementById('dock').getBoundingClientRect();
+    var over=s.bottom-innerHeight, gap=innerHeight-dock.bottom;
+    var rows=[
+      ['innerHeight', px(innerHeight)],
+      ['dvh / lvh', px(unit('dvh'))+' / '+px(unit('lvh'))],
+      ['scroller top..bottom', px(s.top)+' .. '+px(s.bottom)],
+      ['OVERHANG past screen', px(over)],
+      ['GAP under dock', px(gap)],
+      ['scrolled to end', (sc.scrollTop+sc.clientHeight>=sc.scrollHeight-2)],
+      ['insets t/b', px(parseFloat(getComputedStyle(sc).paddingTop)-12)+' / '+px(parseFloat(getComputedStyle(sc).paddingBottom)-12)],
+      ['standalone', (navigator.standalone===true)+' / '+matchMedia('(display-mode: standalone)').matches]
+    ];
+    document.getElementById('t').innerHTML=rows.map(function(r){
+      var c='';
+      if(r[0].indexOf('OVERHANG')===0) c=Math.abs(over)>2?' class="bad"':' class="good"';
+      if(r[0].indexOf('GAP')===0) c=Math.abs(gap-10)>6?' class="bad"':' class="good"';
+      if(r[0].indexOf('insets')===0) c=' class="big"';
+      return '<tr><td>'+r[0]+'</td><td'+c+'>'+r[1]+'</td></tr>';
+    }).join('');
+  }
+  draw(); sc.addEventListener('scroll',draw,{passive:true});
+  addEventListener('resize',draw); setInterval(draw,400);
+</script>
+</body></html>
