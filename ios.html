@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>iOS viewport probe</title>
+<style>
+  :root{--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0b1117;color:#e7edf3;
+    font:600 15px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}
+  #pad{padding:calc(12px + var(--sat)) 14px calc(12px + var(--sab))}
+  h1{font-size:15px;margin:0 0 10px;color:#4ade80;letter-spacing:.02em}
+  table{border-collapse:collapse;width:100%}
+  td{padding:3px 0;vertical-align:top}
+  td:first-child{color:#8fa3b5;padding-right:10px;white-space:nowrap}
+  td:last-child{text-align:right;color:#fff;font-variant-numeric:tabular-nums}
+  .big{color:#fbbf24}
+  /* a probe shaped EXACTLY like Clio's dock */
+  #dock{position:fixed;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));
+    height:64px;border-radius:999px;background:#14532d;border:2px solid #4ade80;
+    display:flex;align-items:center;justify-content:center;color:#d1fae5;font-size:12px}
+</style></head>
+<body>
+<div id="pad">
+  <h1>iOS viewport probe</h1>
+  <table id="t"></table>
+</div>
+<div id="dock">dock probe — same CSS as Clio</div>
+<script>
+  var px = function (v) { return Math.round(v) + 'px'; };
+  function read(name){
+    var d=document.createElement('div');
+    d.style.cssText='position:fixed;left:-9999px;height:env('+name+',0px)';
+    document.body.appendChild(d);
+    var h=d.getBoundingClientRect().height; d.remove(); return h;
+  }
+  var dock=document.getElementById('dock').getBoundingClientRect();
+  var dvh=document.createElement('div');
+  dvh.style.cssText='position:fixed;left:-9999px;height:100dvh';
+  document.body.appendChild(dvh);
+  var dvhH=dvh.getBoundingClientRect().height; dvh.remove();
+  var rows=[
+    ['screen', screen.width+' x '+screen.height],
+    ['innerHeight', px(innerHeight)],
+    ['100dvh', px(dvhH)],
+    ['visualViewport', window.visualViewport?px(visualViewport.height):'n/a'],
+    ['inset TOP', px(read('safe-area-inset-top'))],
+    ['inset BOTTOM', px(read('safe-area-inset-bottom'))],
+    ['standalone', (navigator.standalone===true)+' / '+matchMedia('(display-mode: standalone)').matches],
+    ['dock top', px(dock.top)],
+    ['dock bottom', px(dock.bottom)],
+    ['GAP under dock', px(innerHeight-dock.bottom)],
+    ['body padTop', getComputedStyle(document.body).paddingTop],
+    ['UA', navigator.userAgent.slice(0,46)]
+  ];
+  document.getElementById('t').innerHTML = rows.map(function(r,i){
+    var cls = (r[0].indexOf('inset')===0||r[0].indexOf('GAP')===0)?' class="big"':'';
+    return '<tr><td>'+r[0]+'</td><td'+cls+'>'+r[1]+'</td></tr>';
+  }).join('');
+</script>
+</body></html>
