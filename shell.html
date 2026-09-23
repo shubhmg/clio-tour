@@ -35,7 +35,7 @@
 </style></head>
 <body>
 <div id="shell"><div id="scroll">
-  <h1>CLIO SHELL PROBE &mdash; scroll to the very bottom</h1>
+  <h1>CLIO SHELL PROBE &mdash; ADD TO HOME SCREEN, then open it from there</h1>
   <button id="fixbtn">TAP TO APPLY FIX</button><table id="t"></table>
   <div class="card">filler 1</div><div class="card">filler 2</div>
   <div class="card">filler 3</div><div class="card">filler 4</div>
@@ -53,8 +53,11 @@
   function draw(){
     var s=sc.getBoundingClientRect(), dock=document.getElementById('dock').getBoundingClientRect();
     var over=s.bottom-innerHeight, gap=innerHeight-dock.bottom;
+    var lost = screen.height - innerHeight;
     var rows=[
+      ['screen height', px(screen.height)],
       ['innerHeight', px(innerHeight)],
+      ['LOST to chrome', px(lost)],
       ['dvh / lvh', px(unit('dvh'))+' / '+px(unit('lvh'))],
       ['scroller top..bottom', px(s.top)+' .. '+px(s.bottom)],
       ['OVERHANG past screen', px(over)],
@@ -68,6 +71,8 @@
       if(r[0].indexOf('OVERHANG')===0) c=Math.abs(over)>2?' class="bad"':' class="good"';
       if(r[0].indexOf('GAP')===0) c=Math.abs(gap-10)>6?' class="bad"':' class="good"';
       if(r[0].indexOf('insets')===0) c=' class="big"';
+      if(r[0].indexOf('LOST')===0) c=lost>60?' class="bad"':' class="good"';
+      if(r[0].indexOf('standalone')===0) c=' class="big"';
       return '<tr><td>'+r[0]+'</td><td'+c+'>'+r[1]+'</td></tr>';
     }).join('');
   }
